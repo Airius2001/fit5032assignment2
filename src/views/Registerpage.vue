@@ -101,9 +101,9 @@ const validatedob = (blur) => {
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <h1 class="text-center">Welcome to the Health Charity Platform</h1>
+        <h1 class="text-center">Registration Form</h1>
         <p class="text-center">
-            Your one-stop destination for health resources.
+            Sign up to join us!!!
         </p>
         <form @submit.prevent="submitForm">
           <div class="row mb-3">
@@ -175,7 +175,7 @@ const validatedob = (blur) => {
       </div>
     </div>
   </div>
-
+  
 </template>
 
 <style scoped>
