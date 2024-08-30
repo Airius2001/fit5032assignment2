@@ -40,16 +40,26 @@
   const error = ref('');
   
   const handleLogin = () => {
-    const hardcodedUsername = 'user';
-    const hardcodedPassword = 'password';
-  
-    if (username.value === hardcodedUsername && password.value === hardcodedPassword) {
-      localStorage.setItem('isAuthenticated', 'true');
-      router.push('/about');
+    // get data from localstorage
+    const storedUsers = JSON.parse(localStorage.getItem('submittedCards'));
+
+    if (storedUsers && Array.isArray(storedUsers)) {
+      // find user
+      const user = storedUsers.find(user => 
+        user.username === username.value && 
+        user.password === password.value
+      );
+
+      if (user) {
+        localStorage.setItem('isAuthenticated', 'true');
+        router.push('/personal-info');
+      } else {
+        error.value = 'Invalid credentials';
+      }
     } else {
-      error.value = 'Invalid credentials';
+      error.value = 'No user data found';
     }
-  };
+};
   </script>
   
   <style>

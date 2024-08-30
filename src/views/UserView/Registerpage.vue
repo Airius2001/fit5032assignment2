@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { saveToLocalStorage, getFromLocalStorage } from '../../Utils/localStorageUtils'
 // import DataTable from 'primevue/datatable'
 // import Column from 'primevue/column'
 
@@ -16,8 +17,13 @@ const submittedCards = ref([])
 const submitForm = () => {
   validateName(true)
   validatePassword(true)
-  if (!errors.value.username && !errors.value.password) {
+  validateConfirmPassword(true)
+  validatedob(true)
+
+  if (!errors.value.username && !errors.value.password && !errors.value.confirmPassword && !errors.value.dob) {
     submittedCards.value.push({ ...formData.value })
+    saveToLocalStorage('submittedCards', submittedCards.value)
+
     clearForm()
   }
 }
@@ -91,7 +97,16 @@ const validatedob = (blur) => {
   } else {
     errors.value.dob = null;
   }
-};
+}
+
+// get data from local storage
+onMounted(() => {
+  const storedCards = getFromLocalStorage('submittedCards')
+  if (storedCards) {
+    submittedCards.value = storedCards
+  }
+})
+
 
 
 </script>
