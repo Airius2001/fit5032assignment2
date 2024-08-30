@@ -40,25 +40,20 @@
   const error = ref('');
   
   const handleLogin = () => {
-    // get data from localstorage
-    const storedUsers = JSON.parse(localStorage.getItem('submittedCards'));
+  const storedCards = JSON.parse(localStorage.getItem('submittedCards')) || [];
 
-    if (storedUsers && Array.isArray(storedUsers)) {
-      // find user
-      const user = storedUsers.find(user => 
-        user.username === username.value && 
-        user.password === password.value
-      );
+  const user = storedCards.find(user => user.username === username.value);
 
-      if (user) {
-        localStorage.setItem('isAuthenticated', 'true');
-        router.push('/personal-info');
-      } else {
-        error.value = 'Invalid credentials';
-      }
-    } else {
-      error.value = 'No user data found';
-    }
+  //To check the admin login or normal user login
+  if (username.value === 'admin' && password.value === 'adminPassword123!') {
+    localStorage.setItem('isAuthenticated', 'true');
+    router.push('/admin');
+  } else if (user && user.password === password.value) {
+    localStorage.setItem('isAuthenticated', 'true');
+    router.push('/about');
+  } else {
+    error.value = 'Invalid credentials';
+  }
 };
   </script>
   

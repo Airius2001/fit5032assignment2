@@ -45,7 +45,7 @@ const routes = [
         path: '/admin',
         name: 'Admin',
         component: Adminpage,
-        meta: { requiresAuth: true, requiredRole: 'admin' }
+        meta: { requiresAuth: true }
       }
   ];
   
