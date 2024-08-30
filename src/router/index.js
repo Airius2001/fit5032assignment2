@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Homepage from '../views/Homepage.vue'
-import Loginpage from '../views/Loginpage.vue'
-import Adminpage from '../views/Adminpage.vue'
-import AccessDeniedPage from '../views/AccessDeniedPage.vue'
-import Registerpage from '../views/Registerpage.vue'
-import Aboutpage from '../views/Aboutpage.vue'
+import Homepage from '../views/GeneralView/Homepage.vue'
+import Loginpage from '../views/UserView/Loginpage.vue'
+import Adminpage from '../views/AdminView/Adminpage.vue'
+import AccessDeniedPage from '../views/GeneralView/AccessDeniedPage.vue'
+import Registerpage from '../views/UserView/Registerpage.vue'
+import Aboutpage from '../views/GeneralView/Aboutpage.vue'
+import PersonalInfo from '../views/UserView/PersonalInfo.vue'
 
 
 
@@ -18,6 +19,11 @@ const routes = [
       path: '/about',
       name: 'About',
       component: Aboutpage,
+    },
+    {
+      path: '/personal-info',
+      name: 'PersonalInfo',
+      component: PersonalInfo,
       meta: { requiresAuth: true },
     },
     {
