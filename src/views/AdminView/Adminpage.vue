@@ -3,6 +3,13 @@
       <div class="col-md-8 offset-md-2">
         <h1 class="text-center">Admin Page</h1>
         <p class="text-center">This is admin page</p>
+        <DataTable :value="users" class="p-datatable p-component">
+      <Column field="username" header="Username"></Column>
+      <Column field="password" header="Password"></Column>
+      <Column field="confirmPassword" header="Confirm Password"></Column>
+      <Column field="gender" header="Gender"></Column>
+      <Column field="dob" header="Date of Birth"></Column>
+    </DataTable>
       </div>
 
       <div class="text-center mt-4">
@@ -13,7 +20,14 @@
   
   <script setup>
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+
+const users = ref([]);
+
+onMounted(() => {
+  const storedCards = JSON.parse(localStorage.getItem('submittedCards')) || [];
+  users.value = storedCards;
+});
 
 const router = useRouter();
 
