@@ -58,6 +58,7 @@
 </template>
 
 <script setup>
+import router from '@/router';
 import { ref, onMounted } from 'vue';
 
 const isAuthenticated = ref(false);
@@ -81,6 +82,7 @@ const handleLogout = () => {
   localStorage.removeItem('currentUsername');
   isAuthenticated.value = false;
   isAdmin.value = false;
+  router.push("/")
 };
 
 onMounted(() => {
