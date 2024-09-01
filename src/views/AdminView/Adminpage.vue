@@ -34,10 +34,16 @@ const router = useRouter();
 
 const logout = () => {
   // Clear authentication status
-  localStorage.removeItem('isAuthenticated');
-
-  // Redirect to login page
-  router.push('/login');
+  if (confirm('Are you sure you want to logout?')) {
+    // Perform logout actions
+    localStorage.removeItem('isAuthenticated');
+    
+    // Show a success message
+    alert('Logout successful');
+    
+    // Redirect to login page after message is displayed
+    router.push('/');
+  }
 };
 
 
