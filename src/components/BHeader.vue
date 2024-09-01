@@ -12,23 +12,32 @@
             About Us
           </router-link>
         </li>
-        
-        <!-- Dropdown Menu for User Account -->
-        <li class="nav-item dropdown">
+
+        <!-- Dropdown Menu for User Account, visible if authenticated -->
+        <li v-if="isAuthenticated" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             User Account
           </a>
           <ul class="dropdown-menu" aria-labelledby="userAccountDropdown">
             <li>
-              <router-link to="/login" class="dropdown-item">Login</router-link>
-            </li>
-            <li>
-              <router-link to="/register" class="dropdown-item">Register</router-link>
-            </li>
-            <li>
               <router-link to="/personal-info" class="dropdown-item">Personal Information</router-link>
             </li>
+            <li>
+              <button @click="handleLogout" class="dropdown-item">Logout</button>
+            </li>
           </ul>
+        </li>
+
+        <!-- Show login/register links if not authenticated -->
+        <li v-if="!isAuthenticated" class="nav-item">
+          <router-link to="/login" class="nav-link" active-class="active">
+            Login
+          </router-link>
+        </li>
+        <li v-if="!isAuthenticated" class="nav-item">
+          <router-link to="/register" class="nav-link" active-class="active">
+            Register
+          </router-link>
         </li>
 
         <li class="nav-item">
@@ -43,69 +52,42 @@
             Admin Page
           </router-link>
         </li>
-
       </ul>
     </header>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BHeader',
-  data() {
-    return {
-      isAdmin: false // Default value
-    };
-  },
-  created() {
-  const submittedCards = JSON.parse(localStorage.getItem('submittedCards')) || [];
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const isAuthenticated = ref(false);
+const isAdmin = ref(false);
+
+const checkAuthentication = () => {
+  isAuthenticated.value = localStorage.getItem('isAuthenticated') === 'true';
   const currentUsername = localStorage.getItem('currentUsername');
 
   if (currentUsername) {
+    const submittedCards = JSON.parse(localStorage.getItem('submittedCards')) || [];
     const currentUser = submittedCards.find(user => user.username === currentUsername);
-    // Check if the currentUser exists and if their role is 'admin'
-    this.isAdmin = currentUser && currentUser.role === 'admin'; 
-    console.log('Is Admin:', this.isAdmin); // Debugging
+    isAdmin.value = currentUser && currentUser.role === 'admin'; 
   } else {
-    this.isAdmin = false;
+    isAdmin.value = false;
   }
-}
-}
+};
+
+const handleLogout = () => {
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('currentUsername');
+  isAuthenticated.value = false;
+  isAdmin.value = false;
+};
+
+onMounted(() => {
+  checkAuthentication();
+});
 </script>
 
-
 <style scoped>
-.b-example-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border: solid rgba(0, 0, 0, 0.15);
-  border-width: 1px 0;
-  box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1), inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
-}
-
-.form-control-dark {
-  color: #fff;
-  background-color: var(--bs-dark);
-  border-color: var(--bs-gray);
-}
-
-.form-control-dark:focus {
-  color: #fff;
-  background-color: var(--bs-dark);
-  border-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-}
-
-.bi {
-  vertical-align: -0.125em;
-  fill: currentColor;
-}
-
-.text-small {
-  font-size: 85%;
-}
-
-.dropdown-toggle {
-  outline: 0;
-}
+/* Your existing styles */
 </style>
