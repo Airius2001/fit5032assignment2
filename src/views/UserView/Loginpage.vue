@@ -44,12 +44,13 @@
 
   const user = storedCards.find(user => user.username === username.value);
 
-  //To check the admin login or normal user login
   if (username.value === 'admin' && password.value === 'adminPassword123!') {
     localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('currentUsername', 'admin'); // Ensure this is set
     router.push('/admin');
   } else if (user && user.password === password.value) {
     localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('currentUsername', user.username); // Ensure this is set
     router.push('/about');
   } else {
     error.value = 'Invalid credentials';

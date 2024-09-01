@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { saveToLocalStorage, getFromLocalStorage } from '../../Utils/localStorageUtils'
-// import DataTable from 'primevue/datatable'
-// import Column from 'primevue/column'
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
 const formData = ref({
   username: '',
@@ -13,6 +13,13 @@ const formData = ref({
 })
 
 const submittedCards = ref([])
+const errors = ref({
+  username: null,
+  password: null,
+  confirmPassword: null,
+  gender: null,
+  dob: null
+})
 
 const submitForm = () => {
   validateName(true)
@@ -25,6 +32,8 @@ const submitForm = () => {
     saveToLocalStorage('submittedCards', submittedCards.value)
 
     clearForm()
+    router.push('/login') // Redirect to login page
+    alert('Registration successful!') // Show success message
   }
 }
 
@@ -33,17 +42,9 @@ const clearForm = () => {
     username: '',
     password: '',
     gender: '',
-    dob:''
+    dob: ''
   }
 }
-
-const errors = ref({
-  username: null,
-  password: null,
-  confirmPassword: null,
-  gender: null,
-  dob: null
-})
 
 const validateName = (blur) => {
   if (formData.value.username.length < 3) {
@@ -76,11 +77,7 @@ const validatePassword = (blur) => {
   }
 }
 
-/**
- * Confirm password validation function that checks if the password and confirm password fields match.
- * @param blur: boolean - If true, the function will display an error message if the passwords do not match.
- */
- const validateConfirmPassword = (blur) => {
+const validateConfirmPassword = (blur) => {
   if (formData.value.password !== formData.value.confirmPassword) {
     if (blur) errors.value.confirmPassword = 'Passwords do not match.'
   } else {
@@ -99,15 +96,12 @@ const validatedob = (blur) => {
   }
 }
 
-// get data from local storage
 onMounted(() => {
   const storedCards = getFromLocalStorage('submittedCards')
   if (storedCards) {
     submittedCards.value = storedCards
   }
 })
-
-
 
 </script>
 
@@ -180,7 +174,7 @@ onMounted(() => {
                 v-model="formData.dob"
                 @input="() => validatedob(true)"
             />
-            <div v-if="errors.dateOfBirth" class="text-danger">{{ errors.dob }}</div>
+            <div v-if="errors.dob" class="text-danger">{{ errors.dob }}</div>
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary me-2">Submit</button>
@@ -199,7 +193,6 @@ onMounted(() => {
   max-width: 80vw;
   margin: 0 auto;
   padding: 20px;
-  /* background-color: #e0bfbf; */
   border-radius: 10px;
 }
 
@@ -227,11 +220,4 @@ onMounted(() => {
 .list-group-item {
   padding: 10px;
 }
-
-/* .text-success {
-  color: green;
-} */
-
 </style>
-
-  

@@ -9,7 +9,7 @@
         </li>
         <li class="nav-item">
           <router-link to="/about" class="nav-link" active-class="active">
-            About
+            About Us
           </router-link>
         </li>
         
@@ -31,6 +31,19 @@
           </ul>
         </li>
 
+        <li class="nav-item">
+          <router-link to="/care-tips-and-advice" class="nav-link" active-class="active">
+            Care Tips and Advice
+          </router-link>
+        </li>
+
+        <!-- Admin Page link, visible only for admin users -->
+        <li v-if="isAdmin" class="nav-item">
+          <router-link to="/admin" class="nav-link" active-class="active">
+            Admin Page
+          </router-link>
+        </li>
+
       </ul>
     </header>
   </div>
@@ -39,8 +52,27 @@
 <script>
 export default {
   name: 'BHeader',
+  data() {
+    return {
+      isAdmin: false // Default value
+    };
+  },
+  created() {
+  const submittedCards = JSON.parse(localStorage.getItem('submittedCards')) || [];
+  const currentUsername = localStorage.getItem('currentUsername');
+
+  if (currentUsername) {
+    const currentUser = submittedCards.find(user => user.username === currentUsername);
+    // Check if the currentUser exists and if their role is 'admin'
+    this.isAdmin = currentUser && currentUser.role === 'admin'; 
+    console.log('Is Admin:', this.isAdmin); // Debugging
+  } else {
+    this.isAdmin = false;
+  }
+}
 }
 </script>
+
 
 <style scoped>
 .b-example-divider {

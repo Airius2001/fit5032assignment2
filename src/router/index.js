@@ -6,6 +6,7 @@ import AccessDeniedPage from '../views/GeneralView/AccessDeniedPage.vue'
 import Registerpage from '../views/UserView/Registerpage.vue'
 import Aboutpage from '../views/GeneralView/Aboutpage.vue'
 import PersonalInfo from '../views/UserView/PersonalInfo.vue'
+import CareTipsAndAdvice from '../views/UserView/CareTipsAndAdvice.vue'
 
 
 
@@ -40,6 +41,11 @@ const routes = [
         path: '/register',
         name: 'register',
         component: Registerpage,
+      },
+      {
+        path: '/care-tips-and-advice',
+        name: 'CareTipsAndAdvice',
+        component: CareTipsAndAdvice,
       },
       {
         path: '/admin',
