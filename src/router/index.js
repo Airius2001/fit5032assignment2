@@ -7,14 +7,24 @@ import Registerpage from '../views/UserView/Registerpage.vue'
 import Aboutpage from '../views/GeneralView/Aboutpage.vue'
 import PersonalInfo from '../views/UserView/PersonalInfo.vue'
 import CareTipsAndAdvice from '../views/UserView/CareTipsAndAdvice.vue'
-
-
+import FirebaseSignInView from '../views/UserView/FirebaseSignInView.vue'
+import FirebaseRegisterView from '../views/UserView/FirebaseRegisterView.vue'
 
 const routes = [
     {
       path: '/',
       name: 'Home',
       component: Homepage,
+    },
+    {
+      path: '/FireLogin',
+      name: 'FireLogin',
+      component: FirebaseSignInView,
+    },
+    {
+      path: '/FireRegister',
+      name: 'FireRegister',
+      component: FirebaseRegisterView,
     },
     {
       path: '/about',

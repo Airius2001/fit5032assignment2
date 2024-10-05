@@ -29,15 +29,25 @@
         </li>
 
         <!-- Show login/register links if not authenticated -->
-        <li v-if="!isAuthenticated" class="nav-item">
+        <!-- Assignement 2 Code (Login) -->
+        <!-- <li v-if="!isAuthenticated" class="nav-item">
           <router-link to="/login" class="nav-link" active-class="active">
             Login
           </router-link>
+        </li> -->
+        <li class="nav-item">
+          <router-link to="Firelogin" class="nav-link" active-class="active">Firebase Login</router-link>
         </li>
-        <li v-if="!isAuthenticated" class="nav-item">
+
+        <!-- Assignement 2 Code (Register) -->
+        <!-- <li v-if="!isAuthenticated" class="nav-item">
           <router-link to="/register" class="nav-link" active-class="active">
             Register
           </router-link>
+        </li> -->
+
+        <li class="nav-item">
+          <router-link to="FireRegister" class="nav-link" active-class="active">Firebase Register</router-link>
         </li>
 
         <li class="nav-item">
