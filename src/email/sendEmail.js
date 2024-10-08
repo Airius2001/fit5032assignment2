@@ -1,5 +1,5 @@
 import sgMail from '@sendgrid/mail';
-sgMail.setApiKey('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'); // store API Key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY); // store API Key
 
 const sendEmailWithAttachment = async (to, subject, text, attachment) => {
   const msg = {
