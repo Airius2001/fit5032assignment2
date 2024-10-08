@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>Admin Page</h1>
+        <button @click="logout" class="btn btn-danger">Logout</button>
         <table class="table">
             <thead>
                 <tr>
@@ -21,10 +22,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
 const db = getFirestore();
 const auth = getAuth();
+const router = useRouter();
 const users = ref([]);
 
 const fetchUsers = async () => {
@@ -39,7 +42,17 @@ const fetchUsers = async () => {
     }
 };
 
-// use onMounted to get user data
+const logout = async () => {
+    try {
+        await signOut(auth);
+        console.log("Logged out successfully");
+        router.push("/FireLogin"); // Redirect to login page after logout
+    } catch (error) {
+        console.error("Error logging out: ", error);
+    }
+};
+
+
 onMounted(() => {
     fetchUsers();
 });
@@ -56,5 +69,8 @@ onMounted(() => {
 }
 .table th {
     background-color: #f2f2f2;
+}
+.btn {
+    margin-bottom: 15px;
 }
 </style>
