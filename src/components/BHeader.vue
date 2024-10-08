@@ -29,24 +29,11 @@
         </li>
 
         <!-- Show login/register links if not authenticated -->
-        <!-- Assignement 2 Code (Login) -->
-        <!-- <li v-if="!isAuthenticated" class="nav-item">
-          <router-link to="/login" class="nav-link" active-class="active">
-            Login
-          </router-link>
-        </li> -->
-        <li class="nav-item">
+        <li v-if="!isAuthenticated" class="nav-item">
           <router-link to="Firelogin" class="nav-link" active-class="active">Firebase Login</router-link>
         </li>
 
-        <!-- Assignement 2 Code (Register) -->
-        <!-- <li v-if="!isAuthenticated" class="nav-item">
-          <router-link to="/register" class="nav-link" active-class="active">
-            Register
-          </router-link>
-        </li> -->
-
-        <li class="nav-item">
+        <li v-if="!isAuthenticated" class="nav-item">
           <router-link to="FireRegister" class="nav-link" active-class="active">Firebase Register</router-link>
         </li>
 
@@ -73,31 +60,42 @@
 </template>
 
 <script setup>
-import router from '@/router';
 import { ref, onMounted } from 'vue';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const isAuthenticated = ref(false);
 const isAdmin = ref(false);
+const db = getFirestore();
 
-const checkAuthentication = () => {
-  isAuthenticated.value = localStorage.getItem('isAuthenticated') === 'true';
-  const currentUsername = localStorage.getItem('currentUsername');
+const checkAuthentication = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-  if (currentUsername) {
-    const submittedCards = JSON.parse(localStorage.getItem('submittedCards')) || [];
-    const currentUser = submittedCards.find(user => user.username === currentUsername);
-    isAdmin.value = currentUser && currentUser.role === 'admin'; 
+  if (user) {
+    isAuthenticated.value = true;
+    // Fetch user role from Firestore
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      isAdmin.value = userData.role === 'admin'; 
+    } else {
+      isAdmin.value = false;
+    }
   } else {
+    isAuthenticated.value = false;
     isAdmin.value = false;
   }
 };
 
-const handleLogout = () => {
-  localStorage.removeItem('isAuthenticated');
-  localStorage.removeItem('currentUsername');
+const handleLogout = async () => {
+  const auth = getAuth();
+  await auth.signOut();
   isAuthenticated.value = false;
   isAdmin.value = false;
-  router.push("/")
+  router.push("/");
 };
 
 onMounted(() => {
@@ -106,5 +104,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Your existing styles */
 </style>
