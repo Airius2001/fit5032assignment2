@@ -1,13 +1,13 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import BootstrapVue3 from 'bootstrap-vue-3'
-import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BootstrapVue3 from 'bootstrap-vue-3';
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import PrimeVue from 'primevue/config';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
