@@ -9,12 +9,18 @@ import PersonalInfo from '../views/UserView/PersonalInfo.vue'
 import CareTipsAndAdvice from '../views/UserView/CareTipsAndAdvice.vue'
 import FirebaseSignInView from '../views/UserView/FirebaseSignInView.vue'
 import FirebaseRegisterView from '../views/UserView/FirebaseRegisterView.vue'
+import SendEmail from '../views/UserView/SendEmail.vue'
 
 const routes = [
     {
       path: '/',
       name: 'Home',
       component: Homepage,
+    },
+    {
+      path: '/SendEmail',
+      name: 'SendEmail',
+      component: SendEmail,
     },
     {
       path: '/FireLogin',

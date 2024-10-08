@@ -56,12 +56,17 @@
           </router-link>
         </li>
 
+        <li class="nav-item">
+          <router-link to="SendEmail" class="nav-link" active-class="active">Send Email</router-link>
+        </li>
+
         <!-- Admin Page link, visible only for admin users -->
         <li v-if="isAdmin" class="nav-item">
           <router-link to="/admin" class="nav-link" active-class="active">
             Admin Page
           </router-link>
         </li>
+        
       </ul>
     </header>
   </div>
