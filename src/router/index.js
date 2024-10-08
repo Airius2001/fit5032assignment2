@@ -10,12 +10,18 @@ import CareTipsAndAdvice from '../views/UserView/CareTipsAndAdvice.vue'
 import FirebaseSignInView from '../views/UserView/FirebaseSignInView.vue'
 import FirebaseRegisterView from '../views/UserView/FirebaseRegisterView.vue'
 import SendEmail from '../views/UserView/SendEmail.vue'
+import Adminpage2 from '../views/AdminView/Adminpage2.vue'
 
 const routes = [
     {
       path: '/',
       name: 'Home',
       component: Homepage,
+    },
+    {
+      path: '/adminpage',
+      name: 'adminpage',
+      component: Adminpage2,
     },
     {
       path: '/SendEmail',
@@ -67,7 +73,6 @@ const routes = [
         path: '/admin',
         name: 'Admin',
         component: Adminpage,
-        meta: { requiresAuth: true }
       }
   ];
   
