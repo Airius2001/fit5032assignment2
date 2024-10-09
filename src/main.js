@@ -1,9 +1,11 @@
-import '/bootstrap/dist/css/bootstrap.min.css';
-import BootstrapVue3 from 'bootstrap-vue-3';
-import '/bootstrap-vue-3/dist/bootstrap-vue-3.css';
-import PrimeVue from 'primevue/config';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import '/node_modules/bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import BootstrapVue3 from '/node_modules/bootstrap-vue-3';
+// import BootstrapVue3 from 'bootstrap-vue-3';
+import '/node_modules/bootstrap-vue-3/dist/bootstrap-vue-3.css';
+import PrimeVue from '/node_modules/primevue/config';
+import DataTable from '/node_modules/primevue/datatable';
+import Column from '/node_modules/primevue/column';
 
 import { createApp } from 'vue';
 import App from './App.vue';
