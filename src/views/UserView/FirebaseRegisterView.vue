@@ -78,9 +78,9 @@ const register = () => {
 
   createUserWithEmailAndPassword(auth, email.value, password.value)
     .then(async (data) => {
-      console.log("Your registration has been successfully created")
+      console.log("Your registration has been successfully created");
 
-      const userId = data.user.uid
+      const userId = data.user.uid;
 
       try {
         // Write it in Firestore
@@ -88,18 +88,21 @@ const register = () => {
           email: email.value,
           gender: gender.value,
           dateOfBirth: dateOfBirth.value,
-          isAdmin: false 
-        })
-        console.log("User data saved to Firestore")
-      } catch (error) {
-        console.error("Error writing document: ", error)
-      }
+          isAdmin: false
+        });
+        console.log("User data saved to Firestore");
 
-      router.push("/FireLogin")
+        // Show success message and navigate to login
+        if (window.confirm("Registration successful! Do you want to go to the login page?")) {
+          router.push("/FireLogin");
+        }
+      } catch (error) {
+        console.error("Error writing document: ", error);
+      }
     })
     .catch((error) => {
-      console.log(error.code)
-    })
+      console.log(error.code);
+    });
 };
 </script>
 
