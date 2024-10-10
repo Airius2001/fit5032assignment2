@@ -11,7 +11,11 @@
             class="form-control mb-3" 
         />
 
-        <table class="table">
+        <div v-if="filteredUsers.length === 0" class="alert alert-warning">
+            No users found.
+        </div>
+        
+        <table class="table table-striped table-responsive">
             <thead>
                 <tr>
                     <th @click="sort('email')" style="cursor: pointer;">
@@ -24,19 +28,30 @@
                         <span v-if="sortKey === 'isAdmin' && sortOrder === 'asc'">↑</span>
                         <span v-if="sortKey === 'isAdmin' && sortOrder === 'desc'">↓</span>
                     </th>
+                    <th>Select to send email</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in paginatedUsers" :key="user.uid">
+                <tr v-for="user in paginatedUsers" :key="user.uid" @mouseover="highlightRow(user)" :class="{ 'table-primary': highlightedUser === user.uid }">
                     <td>{{ user.email }}</td>
                     <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <input 
+                            type="checkbox" 
+                            :checked="selectedUsers.includes(user.email)" 
+                            @change="toggleSelection(user.email)" 
+                        />
+                    </td>
                 </tr>
             </tbody>
         </table>
 
+        <textarea v-model="emailContent" placeholder="Enter email content" class="form-control mb-3" rows="4"></textarea>
+        <button @click="sendBulkEmail" class="btn btn-primary">Send Bulk Email</button>
+
         <!-- Pagination controls -->
         <nav aria-label="Page navigation">
-            <ul class="pagination">
+            <ul class="pagination justify-content-center">
                 <li class="page-item" :class="{ disabled: currentPage === 1 }">
                     <a class="page-link" @click="changePage(currentPage - 1)">Previous</a>
                 </li>
@@ -66,6 +81,54 @@ const sortKey = ref('email');
 const sortOrder = ref('asc');
 const currentPage = ref(1);
 const itemsPerPage = 10;
+const highlightedUser = ref(null);
+
+const selectedUsers = ref([]);
+const emailContent = ref(''); // Email content state
+
+const sendBulkEmail = async () => {
+    if (selectedUsers.value.length === 0) {
+        alert("Please select at least one user.");
+        return;
+    }
+
+    const subject = "Your Email Subject"; 
+    const message = emailContent.value; // Use the content from the textarea
+
+    try {
+        const response = await fetch('http://localhost:3000/api/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                emails: selectedUsers.value,
+                subject: subject,
+                message: message,
+            }),
+        });
+
+        if (response.ok) {
+            alert("Emails sent successfully!");
+            selectedUsers.value = []; // Clear selected users after sending
+            emailContent.value = ''; // Clear email content after sending
+        } else {
+            alert("Failed to send emails.");
+        }
+    } catch (error) {
+        console.error("Error sending email:", error);
+        alert("An error occurred while sending emails.");
+    }
+};
+
+// Multiple selection
+const toggleSelection = (email) => {
+    if (selectedUsers.value.includes(email)) {
+        selectedUsers.value = selectedUsers.value.filter(userEmail => userEmail !== email); 
+    } else {
+        selectedUsers.value.push(email);
+    }
+};
 
 const fetchUsers = async () => {
     try {
@@ -108,11 +171,18 @@ const changePage = (page) => {
     currentPage.value = page;
 };
 
+// Sort function
 const sort = (key) => {
     sortKey.value = key;
     sortOrder.value = (sortOrder.value === 'asc') ? 'desc' : 'asc';
 };
 
+// Highlight row function
+const highlightRow = (user) => {
+    highlightedUser.value = user.uid;
+};
+
+// Logout function
 const logout = async () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
@@ -142,6 +212,12 @@ onMounted(() => {
 }
 .table th {
     background-color: #f2f2f2;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+.table-striped tbody tr:hover {
+    background-color: #f1f1f1; /* Hover effect for table rows */
 }
 .btn {
     margin-bottom: 15px;

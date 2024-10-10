@@ -59,7 +59,7 @@
               if (userData.isAdmin) {
                   router.push("/adminpage"); 
               } else {
-                  router.push("/");
+                  router.push("/about");
               }
           } else {
               console.log("No such user document!");

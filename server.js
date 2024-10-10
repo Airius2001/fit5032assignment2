@@ -42,6 +42,28 @@ app.post('/api/send-email', async (req, res) => {
     }
 });
 
+
+app.post('/api/send-email', async (req, res) => {
+    const { emails, subject, message } = req.body;
+
+    
+    const msg = {
+        to: emails, 
+        from: 'Xxz6507@gmail.com',
+        subject: subject,
+        text: message,
+    };
+
+    try {
+        await sgMail.send(msg);
+        res.status(200).send("Emails sent successfully!");
+    } catch (error) {
+        console.error("Error sending email:", error);
+        res.status(500).send("Failed to send emails.");
+    }
+});
+
+
 // Set the port on which the server listens
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
