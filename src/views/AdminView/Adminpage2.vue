@@ -23,17 +23,30 @@
                         <span v-if="sortKey === 'email' && sortOrder === 'asc'">↑</span>
                         <span v-if="sortKey === 'email' && sortOrder === 'desc'">↓</span>
                     </th>
+                    <th @click="sort('gender')" style="cursor: pointer;">
+                        Gender 
+                        <span v-if="sortKey === 'gender' && sortOrder === 'asc'">↑</span>
+                        <span v-if="sortKey === 'gender' && sortOrder === 'desc'">↓</span>
+                    </th>
+                    <th @click="sort('age')" style="cursor: pointer;">
+                        Age 
+                        <span v-if="sortKey === 'age' && sortOrder === 'asc'">↑</span>
+                        <span v-if="sortKey === 'age' && sortOrder === 'desc'">↓</span>
+                    </th>
                     <th @click="sort('isAdmin')" style="cursor: pointer;">
                         Is Admin 
                         <span v-if="sortKey === 'isAdmin' && sortOrder === 'asc'">↑</span>
                         <span v-if="sortKey === 'isAdmin' && sortOrder === 'desc'">↓</span>
                     </th>
                     <th>Select to send email</th>
+                    <th>Action</th> <!-- 新增“操作”列 -->
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in paginatedUsers" :key="user.uid" @mouseover="highlightRow(user)" :class="{ 'table-primary': highlightedUser === user.uid }">
                     <td>{{ user.email }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>{{ calculateAge(user.dateOfBirth) }}</td>
                     <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
                     <td>
                         <input 
@@ -41,6 +54,9 @@
                             :checked="selectedUsers.includes(user.email)" 
                             @change="toggleSelection(user.email)" 
                         />
+                    </td>
+                    <td>
+                        <button @click="deleteUser(user.uid)" class="btn btn-danger btn-sm">Delete</button> <!-- 删除按钮 -->
                     </td>
                 </tr>
             </tbody>
@@ -68,7 +84,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
@@ -85,6 +101,30 @@ const highlightedUser = ref(null);
 
 const selectedUsers = ref([]);
 const emailContent = ref(''); // Email content state
+
+// Function to calculate age based on date of birth
+const calculateAge = (dob) => {
+    if (!dob) return null;
+    const birthDate = new Date(dob);
+    const ageDiff = new Date() - birthDate;
+    const ageDate = new Date(ageDiff);
+    return Math.abs(ageDate.getUTCFullYear() - 1970); // Calculate age in years
+};
+
+// Delete user function
+const deleteUser = async (uid) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (confirmDelete) {
+        try {
+            await deleteDoc(doc(db, "users", uid));
+            alert("User deleted successfully!");
+            fetchUsers(); // Refresh user list after deletion
+        } catch (error) {
+            console.error("Error deleting user: ", error);
+            alert("Failed to delete user.");
+        }
+    }
+};
 
 const sendBulkEmail = async () => {
     if (selectedUsers.value.length === 0) {
@@ -202,28 +242,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-.table th, .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-.table th {
-    background-color: #f2f2f2;
-}
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #f9f9f9;
-}
-.table-striped tbody tr:hover {
-    background-color: #f1f1f1; /* Hover effect for table rows */
-}
-.btn {
-    margin-bottom: 15px;
-}
-.pagination {
-    justify-content: center;
-    margin-top: 15px;
+.table-primary {
+    background-color: rgba(0, 123, 255, 0.1);
 }
 </style>
