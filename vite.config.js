@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/fit5032assignment2/",
+  base: "/",
   plugins: [
     vue(),
     vueDevTools(),
