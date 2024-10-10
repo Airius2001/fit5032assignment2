@@ -113,6 +113,13 @@ const calculateAge = (dob) => {
 
 // Delete user function
 const deleteUser = async (uid) => {
+    // Find the user to be deleted
+    const userToDelete = users.value.find(user => user.uid === uid);
+    if (userToDelete && userToDelete.isAdmin) {
+        alert("Cannot delete an admin user.");
+        return; // Stop further execution if the user is an admin
+    }
+
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
         try {
