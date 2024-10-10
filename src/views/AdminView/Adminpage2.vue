@@ -114,12 +114,15 @@ const sort = (key) => {
 };
 
 const logout = async () => {
-    try {
-        await signOut(auth);
-        console.log("Logged out successfully");
-        router.push("/FireLogin"); // Redirect to login page after logout
-    } catch (error) {
-        console.error("Error logging out: ", error);
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+        try {
+            await signOut(auth);
+            console.log("Logged out successfully");
+            router.push("/FireLogin"); // Redirect to login page after logout
+        } catch (error) {
+            console.error("Error logging out: ", error);
+        }
     }
 };
 
