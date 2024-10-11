@@ -39,7 +39,7 @@
                         <span v-if="sortKey === 'isAdmin' && sortOrder === 'desc'">↓</span>
                     </th>
                     <th>Select to send email</th>
-                    <th>Action</th> <!-- 新增“操作”列 -->
+                    <th>Action</th> 
                 </tr>
             </thead>
             <tbody>
@@ -56,7 +56,7 @@
                         />
                     </td>
                     <td>
-                        <button @click="deleteUser(user.uid)" class="btn btn-danger btn-sm">Delete</button> <!-- 删除按钮 -->
+                        <button @click="deleteUser(user.uid)" class="btn btn-danger btn-sm">Delete</button> 
                     </td>
                 </tr>
             </tbody>

@@ -31,6 +31,10 @@
         <li class="nav-item">
           <router-link to="SendEmail" class="nav-link" active-class="active">Send Email</router-link>
         </li>
+
+        <li class="nav-item">
+          <router-link to="Map" class="nav-link" active-class="active">Map</router-link>
+        </li>
         
       </ul>
     </header>

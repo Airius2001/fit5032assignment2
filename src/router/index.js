@@ -11,12 +11,18 @@ import FirebaseSignInView from '../views/UserView/FirebaseSignInView.vue'
 import FirebaseRegisterView from '../views/UserView/FirebaseRegisterView.vue'
 import SendEmail from '../views/UserView/SendEmail.vue'
 import Adminpage2 from '../views/AdminView/Adminpage2.vue'
+import GeoLoc from '../views/GeneralView/GeoLoc.vue'
 
 const routes = [
     {
       path: '/',
       name: 'Home',
       component: Homepage,
+    },
+    {
+      path: '/Map',
+      name: 'Map',
+      component: GeoLoc,
     },
     {
       path: '/adminpage',
